@@ -17,6 +17,8 @@ class GameScene: SKScene {
     var rightEdge = 1024 + 22
     var bottomEdge = -22
     
+    var numberOfLaunches = 0
+    
     var scoreLabel: SKLabelNode!
     var score = 0 {
         didSet {
@@ -75,6 +77,16 @@ class GameScene: SKScene {
     }
     
     @objc func launchFireworks() {
+        
+        if (numberOfLaunches > 10) {
+            gameTimer?.invalidate()
+            let gameOverLabel = SKLabelNode(text: "Game Over")
+            gameOverLabel.position = CGPoint(x: 512, y: 368)
+            gameOverLabel.horizontalAlignmentMode = .center
+            addChild(gameOverLabel)
+            return
+        }
+        
         let movementAmount: CGFloat = 1800
         switch Int.random(in: 0...3) {
         case 0:
@@ -111,6 +123,9 @@ class GameScene: SKScene {
         default:
             break
         }
+        
+        numberOfLaunches += 1
+
     }
     
     func checkTouches(_ touches: Set<UITouch>) {
